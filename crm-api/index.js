@@ -1,39 +1,19 @@
 const express = require('express');
 const MongoClient = require('./db/MongoClient');
 const { registerRoutes } = require('./routes');
+const { registerMiddleware } = require('./middleware');
 require('dotenv').config();
 
 const db = new MongoClient();
-//db.connect();
+db.connect();
 
 const app = express();
 const port = process.env.NODE_PORT;
 
-app.use(express.json());
-app.use(express.urlencoded({
-    extended: true,
-}));
+registerMiddleware(app);
 
 //API Routes
 registerRoutes(app);
-
-//Default
-app.get('/', (req, res) => {
-    res.status(200);
-    res.json({});
-});
-
-//404
-app.use((req, res) => {
-    res.status(404);
-    res.json({
-        error: "Route not Found!",
-    });
-});
-//Error Handler
-app.use(function(err, req, res, next) {
-    res.status(500).json(err);
-});
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}/`);

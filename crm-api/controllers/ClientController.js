@@ -1,9 +1,8 @@
-const Client = require("../models/Client");
+const { Client } = require("../models/Client");
+const NotFoundError = require("../errors/NotFoundError");
+const ValidationError = require("../errors/ValidationError");
 
 class ClientController {
-
-    constructor() {
-    }
 
     getClients = async (req, res, next) => {
         try {
@@ -18,24 +17,22 @@ class ClientController {
         try {
             const {id} = req.params;
             const client = await Client.findById(id).exec();
-            if (!client) {
-                res.status(404)
+            if (client) {
+                res.status(200).json(client);
             }
-            res.status(200).json(client);
+            next(new NotFoundError());
         } catch (e) {
-            next(e);
+            next(e.message);
         }
     }
 
     createClient = async (req, res, next) => {
-        // return res.json(req.body);
-        const client = new Client(req.body);
-
         try {
+            const client = new Client(req.body);
             const c = client.save();
-            res.status(200).json(c);
+            res.status(200).json(client);
         } catch (e) {
-            next(e);
+            next(e.errors ? new ValidationError(e) : e);
         }
     }
 
@@ -46,10 +43,12 @@ class ClientController {
             if (client) {
                 client.overwrite(req.body);
                 const c = await client.save();
-                res.status(200).json(c);
+                res.status(200).json(client);
+            } else {
+                next(new NotFoundError());
             }
         } catch (e) {
-            next(e);
+            next(e.errors ? new ValidationError(e) : e);
         }
     }
 
@@ -60,9 +59,11 @@ class ClientController {
             if (client) {
                 await client.remove();
                 res.status(200).json({});
+            } else {
+                next(new NotFoundError());
             }
         } catch (e) {
-            next(e);
+            next(e.message);
         }
     }
 
