@@ -22,7 +22,7 @@ class ClientController {
             }
             next(new NotFoundError());
         } catch (e) {
-            next(e.message);
+            next(e);
         }
     }
 
@@ -63,7 +63,7 @@ class ClientController {
                 next(new NotFoundError());
             }
         } catch (e) {
-            next(e.message);
+            next(e);
         }
     }
 
