@@ -43,7 +43,7 @@ const clientSchema = new mongoose.Schema({
         virtuals: true,
     },
     toObject: {
-        virtuals:true,
+        virtuals: true,
     }
 });
 

@@ -1,8 +1,8 @@
 const express = require('express');
+require('dotenv').config();
 const MongoClient = require('./db/MongoClient');
 const { registerRoutes } = require('./routes');
 const { registerMiddleware } = require('./middleware');
-require('dotenv').config();
 
 const db = new MongoClient();
 db.connect();

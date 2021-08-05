@@ -1,9 +1,9 @@
-const ClientController = require("../controllers/ClientController");
-const ProjectController = require("../controllers/ProjectController");
+const UserController = require("../controllers/UserController");
 const NotFoundError = require("../errors/NotFoundError");
+const { authLocal, authJwt } = require("../services/auth/auth.services");
+const authRouter = require("./authRoutes");
 
-const clientController = new ClientController();
-const projectController = new ProjectController();
+const userController = new UserController();
 
 const registerRoutes = (app) => {
 
@@ -14,17 +14,10 @@ const registerRoutes = (app) => {
         });
     });
 
-    app.get('/clients', clientController.getClients);
-    app.get('/clients/:id', clientController.getClientById);
-    app.post('/clients', clientController.createClient);
-    app.patch('/clients/:id', clientController.updateClientById);
-    app.delete('/clients/:id', clientController.deleteClientById);
+    app.post('/register', userController.register);
+    app.post('/login', authLocal, userController.login);
 
-    app.get('/projects', projectController.getProjects);
-    app.get('/projects/:id', projectController.getProjectById);
-    app.post('/projects', projectController.createProject);
-    app.patch('/projects/:id', projectController.updateProjectById);
-    app.delete('/projects/:id', projectController.deleteProjectById);
+    app.use(authJwt, authRouter);
 
     //404
     app.use((req, res, next) => {
