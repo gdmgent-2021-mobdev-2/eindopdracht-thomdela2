@@ -1,12 +1,19 @@
 import React from 'react';
 import './App.css';
-import Routes from './Routes';
+import { Header, Footer } from './Components/Design/Layout';
+import Routes from './MainRouting';
+
 
 function App() {
+
   return (
-    <div>
-      <Routes />
-    </div>
+    <>
+      <Header />
+      <div className="container">
+        <Routes />    
+      </div>
+      <Footer />
+    </>
   );
 }
 
