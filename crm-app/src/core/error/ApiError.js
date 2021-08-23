@@ -5,7 +5,7 @@ class ApiError extends Error {
             this.message = `${err.statusCode} ${err.message}`;
             this.statusCode = err.statusCode;
         } else {
-            this.message = 'Something went wrong!';
+            this.message = 'Something went wrong';
             this.statusCode = 500;
         }
     }
@@ -15,7 +15,7 @@ class ApiError extends Error {
     }
 
     isUnauthorized() {
-        return this.statusCode === 401;
+        return this.statusode === 401;
     }
 }
 

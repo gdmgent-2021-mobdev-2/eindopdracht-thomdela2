@@ -1,24 +1,30 @@
 import ApiError from "../error/ApiError";
-import { createClient } from "../modules/clients/api";
 
 const handleApiResult = async (res) => {
     if(!res.ok) {
-        const err = await res.json();
-        throw new ApiError(err);
+        const json = await res.json();
+        throw new ApiError(json);
     }
-    return res;
+    return res.json();
 }
 
-const createHeaders = ({ token }, extra = {}) => {
+const createHeaders = (extra={}) => {
     return {
         'Content-Type': 'application/json',
-        'Authorization': `BEARER ${token}`,
-        ...extra
+        ...extra,
     }
+};
+
+const createAuthHeader = (token) => ({
+    'Authorization': `BEARER ${token}`,
+});
+
+const withToken = (promise, token) => {
+    return promise(createAuthHeader(token)); 
 }
 
-
-export { 
+export {
     handleApiResult,
     createHeaders,
-};
+    withToken,
+}

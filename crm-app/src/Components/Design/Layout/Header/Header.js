@@ -1,5 +1,6 @@
 import React from 'react';
 import LogoutButton from './LogoutButton';
+import './Header.css';
 
 const Header = () => {
 

@@ -3,6 +3,11 @@ import { Button, Input } from '../../Design/System';
 import * as yup from 'yup';
 import { login } from '../../../core/modules/auth/api';
 import { getValidationErrors } from '../../../core/utils/validation';
+import './LoginPage.css';
+import { handleApiResult } from '../../../core/utils/api';
+import ApiError from '../../../core/error/ApiError';
+import AppError from '../../../core/error/AppError';
+import ErrorAlert from './Shared/ErrorAlert';
 
 let schema = yup.object().shape({
     email: yup.string().email().required(),
@@ -30,14 +35,21 @@ const LoginPage = ({ setUser }) => {
         schema.validate(data).then(() => {
             // login module
             login(data)
-            .then((res) => res.json())
+            .then(handleApiResult)
             .then((data) => {
                 // succes
-                console.log(data);
                 setUser(data);
             })
             .catch((e) => {
-                setError(e);
+                if (e instanceof ApiError) {
+                    if (e.isUnauthorized()) {
+                        setError(new AppError('Wrong combination'));
+                    } else {
+                        setError(e);
+                    }
+                }
+                    setError(new AppError(e));
+                
             })
         }).catch((err) => {
             //
@@ -48,21 +60,14 @@ const LoginPage = ({ setUser }) => {
     return (
         <div className="container">
             <div className="text-center">
-
-                {error && (
-                    <div>
-                        {error}
-                    </div>
-                )}
-
-                <form
+                <form className="loginForm"
                     onSubmit={handleSubmit}
                     noValidate={true}>
-                    <h1 className="h3 mb-3 font-weight-normal">
-                        1 step away from your dashboard...
+                    <h1>
+                        Log in to explore our CRM
                     </h1>
 
-                    <label htmlFor="email">Email address</label>
+                    <small htmlFor="email">Email address</small>
                     <Input
                         type="email"
                         name="email"
@@ -71,7 +76,7 @@ const LoginPage = ({ setUser }) => {
                         onChange={handleChange}
                     />
 
-                    <label htmlFor="password">Password</label>
+                    <small htmlFor="password">Password</small>
                     <Input
                         type="password"
                         name="password"
@@ -84,8 +89,10 @@ const LoginPage = ({ setUser }) => {
                         Log in
                     </Button>
                 </form>
-            </div>
 
+                <ErrorAlert error={error} />
+
+            </div>
         </div>
     )
 }

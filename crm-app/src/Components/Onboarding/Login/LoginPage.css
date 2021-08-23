@@ -1,0 +1,14 @@
+.container {
+    padding: 30px 60px;
+    display: flex;
+}
+
+.loginForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+form h1 {
+    margin-bottom: 30px;
+}

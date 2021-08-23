@@ -1,28 +1,17 @@
 import { useState, useEffect, useCallback} from 'react';
-import { useAuth } from '../../Components/Auth/AuthProvider';
+import useAuthApi from './useAuthApi';
 
-const useFetch = (url) => {
-    const {user} = useAuth();
+const useFetch = (apiCall) => {
+    const withAuth = useAuthApi();
 
     const [data, setData] = useState();
     const [error, setError] = useState();
 
     const fetchData = useCallback((isCurrent = true) => {
-        fetch(`${process.env.REACT_APP_API_URL}${url}`, {
-            headers: {
-                'Authorization': `BEARER ${user.token}`,
-            }
-        })
-        .then((res) => {
-            if(res.status === 404) {
-                throw new Error('Not Found!');
-            }
-            return res;
-        })
-        .then((res) => res.json())
+        withAuth(apiCall())
         .then((data) => isCurrent && setData(data))
-        .catch((err) => isCurrent && setError(String(err)));
-    }, [url, user.token])
+        .catch((err) => isCurrent && setError(err));
+    }, [apiCall, withAuth])
 
     const refresh = () => {
         fetchData();
@@ -32,10 +21,10 @@ const useFetch = (url) => {
         setData(null);
         setError(null);
 
-        if (url) {
+        if (apiCall) {
             fetchData();
         }
-    }, [url, fetchData]);
+    }, [apiCall, fetchData]);
 
     const isLoading = !data && !error;
 

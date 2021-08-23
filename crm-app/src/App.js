@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { Header, Footer } from './Components/Design/Layout';
+import { Header, Footer, Sidebar } from './Components/Design/Layout';
 import Routes from './MainRouting';
 
 function App() {
@@ -9,6 +9,7 @@ function App() {
     <>
       <Header />
       <div className="container">
+        <Sidebar />
         <Routes />
       </div>
       <Footer />
