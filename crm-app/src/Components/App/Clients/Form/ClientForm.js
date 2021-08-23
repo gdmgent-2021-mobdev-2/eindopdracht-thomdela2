@@ -1,14 +1,14 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import { Button, Input } from '../../../Design/System';
 import * as yup from 'yup';
+import { getValidationErrors } from '../../../../core/utils/validation';
 
 const schema = yup.object().shape({
     email: yup.string().email().required(),
     company: yup.string().required(),
     firstname: yup.string().required(),
     lastname: yup.string().required(),
-    gender: yup.string().required(),
-    age: yup.number().required(),
+    slug: yup.string().required(),
 });
 
 const defaultData = {
@@ -16,11 +16,11 @@ const defaultData = {
     email: '',
     firstname: '',
     lastname: '',
-    gender: '',
-    age: '21',
+    slug: ''
 }
 
 const ClientForm = ({ onSubmit, initialData = {}, disabled }) => {
+    const [isTouched, setIsTouched] = useState();
     const [data, setData] = useState({
         ...defaultData,
         ...initialData,
@@ -28,81 +28,91 @@ const ClientForm = ({ onSubmit, initialData = {}, disabled }) => {
     const [errors, setErrors] = useState({});
 
     const handleChange = (e) => {
+        validate();
         setData({
             ...data,
             [e.target.name]: e.target.value,
         });
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const validate = useCallback((onSucces) => {
         schema.validate(data, { abortEarly: false })
             .then(() => {
-                onSubmit(data);
+                if(onSucces) {
+                    onSubmit(data);
+                }
             }).catch((e) => {
-                setErrors(e);
+                setErrors(getValidationErrors(e));
             });
+    }, [data, onSubmit]);
+
+    useEffect(() => {
+        if(isTouched) {
+            validate();
+        }
+    }, [data, isTouched, validate])
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setIsTouched(true);
+        validate(() => {
+            onSubmit(data);
+        });
     }
 
     return (
-        <form onSubmit={handleSubmit} noValidate={true}>
-            
-            <label htmlFor="company">Company</label>
-            <Input type="text" 
-                    name="company" 
-                    value={data.company} 
-                    onChange={handleChange}
-                    disabled={disabled}
-                    error={errors.company}
-                />
+        <div className="innerMain">
+            <p>Fill in the form to create a client</p>
+            <form onSubmit={handleSubmit} noValidate={true}>
+                
+                <label htmlFor="company">Company</label>
+                <Input type="text" 
+                        name="company" 
+                        value={data.company} 
+                        onChange={handleChange}
+                        disabled={disabled}
+                        error={errors.company}
+                    />
 
-            <label htmlFor="email">Email address</label>
-            <Input type="email" 
-                    name="email" 
-                    value={data.email} 
-                    onChange={handleChange}
-                    disabled={disabled}
-                    error={errors.email}
-                />
+                <label htmlFor="email">Email address</label>
+                <Input type="email" 
+                        name="email" 
+                        value={data.email} 
+                        onChange={handleChange}
+                        disabled={disabled}
+                        error={errors.email}
+                    />
 
-            <label htmlFor="firstname">Firstname</label>
-            <Input type="text" 
-                    name="firstname" 
-                    value={data.firstname} 
-                    onChange={handleChange}
-                    disabled={disabled}
-                    error={errors.firstname}
-                />
+                <label htmlFor="firstname">Firstname</label>
+                <Input type="text" 
+                        name="firstname" 
+                        value={data.firstname} 
+                        onChange={handleChange}
+                        disabled={disabled}
+                        error={errors.firstname}
+                    />
 
-            <label htmlFor="lastname">Lastname</label>
-            <Input type="text" 
-                    name="lastname" 
-                    value={data.lastname} 
-                    onChange={handleChange}
-                    disabled={disabled}
-                    error={errors.lastname}
-                />
+                <label htmlFor="lastname">Lastname</label>
+                <Input type="text" 
+                        name="lastname" 
+                        value={data.lastname} 
+                        onChange={handleChange}
+                        disabled={disabled}
+                        error={errors.lastname}
+                    />
 
-            <label htmlFor="gender">Gender</label>
-            <Input type="text" 
-                    name="gender" 
-                    value={data.gender} 
-                    onChange={handleChange}
-                    disabled={disabled}
-                    error={errors.gender}
-                />
+                <label htmlFor="slug">Slug</label>
+                <Input type="text" 
+                        name="slug" 
+                        value={data.slug} 
+                        onChange={handleChange}
+                        disabled={disabled}
+                        error={errors.slug}
+                    />
 
-            <label htmlFor="age">Age</label>
-            <Input type="number" 
-                    name="age" 
-                    value={data.age} 
-                    onChange={handleChange}
-                    disabled={disabled}
-                    error={errors.age}
-                />
-
-            <Button type="submit">{data._id ? 'Update' : 'Create'}</Button>
-        </form>
+                <Button type="submit">{data._id ? 'Update' : 'Create'}</Button>
+            </form>
+        </div>
     )
 }
 
