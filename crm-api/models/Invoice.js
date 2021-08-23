@@ -8,15 +8,14 @@ const States = {
 
 //Create Schema
 const invoiceSchema = new mongoose.Schema({
-    invoice: {
-        number: {
-            type: Number,
-            required: true,
-        },
-        type: {
-            type: String,
-            required: true,
-        },
+
+    number: {
+        type: Number,
+        required: true,
+    },
+    type: {
+        type: String,
+        required: true,
     },
     state: {
         type: String,

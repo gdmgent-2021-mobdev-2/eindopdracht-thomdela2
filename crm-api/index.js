@@ -3,12 +3,19 @@ require('dotenv').config();
 const MongoClient = require('./db/MongoClient');
 const { registerRoutes } = require('./routes');
 const { registerMiddleware } = require('./middleware');
+const cors = require('cors');
 
 const db = new MongoClient();
 db.connect();
 
 const app = express();
 const port = process.env.NODE_PORT;
+
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({
+    extended: true,
+}));
 
 registerMiddleware(app);
 

@@ -3,16 +3,14 @@ const { Project } = require('./Project');
 
 //Create Schema
 const clientSchema = new mongoose.Schema({
-    name: {
-        firstname: {
-            type: String,
-            required: true,
-    
-        },
-        lastname: {
-            type: String,
-            required: true,
-        },
+    firstname: {
+        type: String,
+        required: true,
+
+    },
+    lastname: {
+        type: String,
+        required: true,
     },
     email: {
         type: String,
@@ -22,20 +20,11 @@ const clientSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    gender: {
-        type: String,
-        required: true,
-    },
     location: {
         address: String,
         postalcode: Number,
         city: String,
         country: String,
-    },
-    date: {
-        age: {
-            type: Number,
-        }
     }
 }, {
     timestamps: true,

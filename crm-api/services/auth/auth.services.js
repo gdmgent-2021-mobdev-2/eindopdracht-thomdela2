@@ -1,8 +1,8 @@
 const passport = require('passport');
-const LocalStrategy = require('passport-local');
-const { ExtractJwt, Strategy } = require('passport-jwt');
-const { User } = require('../../models/User');
 const AuthError = require('../../errors/AuthError');
+const localStrategy = require('./localStrategy');
+const jwtStrategy = require('./jwtStrategy');
+const ForbiddenError = require('../../errors/ForbiddenError');
 
 const passportWithErrorHandling = (strategy) => {
     return function(req, res, next) { 
@@ -20,50 +20,23 @@ const passportWithErrorHandling = (strategy) => {
     }
 }
 
-const localStrategy = new LocalStrategy(
-    {
-        usernameField: 'email',
-    }, async (email, password, done) => {
-        try {
-            const user = await User.findOne({email});
-            if (user) {
-                const check = await user.comparePassword(password);
-                if (check) {
-                    return done(null, user);
-                }
-            }
-            return done(null, null);
-
-        } catch (e) {
-            return done(e, null);
-        }
-    }
-);
-
-const jwtOptions = {
-    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: process.env.JWT_SECRET,
-};
-
-const jwtStrategy = new Strategy(jwtOptions, async (payload, done) => {
-    try {
-        const user = await User.findById(payload._id);
-        if (!user) {
-            return done(null, false);
-        }
-        return done(null, user);
-    } catch (e) {
-        return done(e, false);
-    }
-});
-
 passport.use('local', localStrategy);
 passport.use('jwt', jwtStrategy);
 
 const authLocal = passportWithErrorHandling('local');
 const authJwt = passportWithErrorHandling('jwt');
 
+const withRole = (role) => (req, res, next) => {
+    const { user } = req;
+    if(user.role === role) {
+        next();
+    } else {
+        next(new ForbiddenError());
+    }
+}
+
 module.exports = {
     authLocal,
-    authJwt
+    authJwt,
+    withRole,
 }
