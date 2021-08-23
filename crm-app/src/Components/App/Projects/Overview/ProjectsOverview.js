@@ -5,7 +5,7 @@ import { route, Routes } from '../../../../core/routing';
 
 const ProjectsOverview = () => {
 
-    const { data : projects, refresh, error, isLoading } = useFetch('/data.json');
+    const { data : projects, refresh, error, isLoading } = useFetch('/projects');
 
     if(isLoading) return "Loading...";
     if(error) return alert(error);
@@ -16,8 +16,8 @@ const ProjectsOverview = () => {
             <button onClick={() => refresh()}>Refresh</button>
             <ul>
                 {projects.map((project) => (
-                    <li key={project.id}>
-                        <Link to={route(Routes.ProjectsDetail, { id: project.id })}>{project.name}</Link>
+                    <li key={project._id}>
+                        <Link to={route(Routes.ProjectsDetail, { id: project._id })}>{project.name}</Link>
                     </li>
                 ))}
             </ul>

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Input = React.forwardRef(( { type = "text", name, onChange, value, placeholder = "" }, ref ) => {
+const Input = React.forwardRef(( { type = "text", name, onChange, value, error, placeholder = "" }, ref ) => {
     return (
         <div className="form-group">
             <input className="form-control"
@@ -11,6 +11,12 @@ const Input = React.forwardRef(( { type = "text", name, onChange, value, placeho
                     ref={ref}
                     onChange={onChange}
                     placeholder={placeholder} />
+
+                    {error && (
+                        <div className="invalid-feedback">
+                            {error}
+                        </div>
+                    )}
         </div>
     )
 });

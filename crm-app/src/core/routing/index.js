@@ -8,7 +8,8 @@ const Routes = Object.freeze({
     ClientsDetail: '/clients/:id',
     Invoices: '/invoices',
     InvoicesDetail: '/invoices/:id',
-    InvoicesDetailAddTime: '/invoices/:id/add'
+    InvoicesDetailAddTime: '/invoices/:id/add',
+    Login: '/login',
 });
 
 /* 

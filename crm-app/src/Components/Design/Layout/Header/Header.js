@@ -1,11 +1,14 @@
-import React from 'react'
+import React from 'react';
+import LogoutButton from './LogoutButton';
 
 const Header = () => {
+
     return (
         <header>
-            <p>Header</p>
+            <p>header</p>
+            <LogoutButton />
         </header>
     )
-}
+};
 
 export default Header;
