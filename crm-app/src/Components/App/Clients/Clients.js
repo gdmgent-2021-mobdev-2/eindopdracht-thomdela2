@@ -2,8 +2,8 @@ import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import ClientsOverview from './Overview/ClientsOverview';
 import { Routes } from '../../../core/routing';
-import ClientsDetail from './Detail/ClientsDetail';
 import CreateClient from './Create/CreateClient';
+import ClientDetailContainer from './Detail/ClientDetailContainer';
 
 const Clients = () => {
     return (
@@ -13,7 +13,7 @@ const Clients = () => {
                     <CreateClient />
                 </Route>
                 <Route path={Routes.ClientsDetail}>
-                    <ClientsDetail />
+                    <ClientDetailContainer />
                 </Route>
                 <Route path={Routes.Clients}>
                     <ClientsOverview />

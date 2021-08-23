@@ -4,9 +4,12 @@
 const Routes = Object.freeze({
     Projects: '/projects',
     ProjectsDetail: '/projects/:id',
+    // clients
     Clients: '/clients',
     ClientsDetail: '/clients/:id',
     ClientsCreate: '/clients/create',
+    ClientsEdit: '/clients/:id/edit',
+    ClientsDelete: '/clients/:id/delete',
     Invoices: '/invoices',
     InvoicesDetail: '/invoices/:id',
     InvoicesDetailAddTime: '/invoices/:id/add',

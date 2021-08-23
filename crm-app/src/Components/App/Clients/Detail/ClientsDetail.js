@@ -1,15 +1,22 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { route, Routes } from '../../../../core/routing';
 
-const ClientsDetail = () => {
+const ClientsDetail = ({ client }) => {
 
-    const {id} = useParams();
+    if(client) {
+        return (
+            <main>
+                <div className="innerMain">
+                    <h1>{client.email}</h1>
+                    <Link to={route(Routes.ClientsEdit, {id: client._id})}>Edit client</Link>
+                    <Link to={route(Routes.ClientsDelete, { id: client._id })}>Delete client</Link>
+                    <p>{`${client.firstname} ${client.lastname}`}</p>
+                </div>
+            </main>
+        )
+    }
 
-    return (
-        <>
-            <h1>Client Detail {id}</h1>
-        </>
-    )
 }
 
 export default ClientsDetail;

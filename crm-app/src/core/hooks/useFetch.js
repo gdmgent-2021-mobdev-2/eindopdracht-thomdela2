@@ -31,6 +31,7 @@ const useFetch = (apiCall) => {
     return {
         data,
         error,
+        setData,
         refresh,
         isLoading
     }
