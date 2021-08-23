@@ -38,7 +38,6 @@ const LoginPage = ({ setUser }) => {
             .then(handleApiResult)
             .then((data) => {
                 // succes
-                console.log(data);
                 setUser(data);
             })
             .catch((e) => {

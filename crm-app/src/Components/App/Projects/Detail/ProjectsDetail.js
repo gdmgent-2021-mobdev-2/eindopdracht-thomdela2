@@ -1,20 +1,30 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+// import { fetchClient } from '../../../../core/modules/clients/api';
 
 /*
  * project detail 
  * :id 
  */
-const ProjectsDetail = () => {
+const ProjectsDetail = ({ project }) => {
 
-    // destructure id from params
-    const {id} = useParams();
 
-    return (
-        <>
-            <h1>Project Detail {id}</h1>
-        </>
-    )
+    /*const clientCall = useCallback(() => {
+        return fetchClient(project.clientId);
+    }, [project.clientId])*/
+    // const { data : client } = useFetch(clientCall);
+    // TODO: add client
+
+
+    if(project) {
+        return (
+            <main>
+                <div className="innerMain">
+                    <h1>{project.name}</h1>
+                    <p>{project.state}</p>
+                </div>
+            </main>
+        )
+    }
 }
 
 export default ProjectsDetail;

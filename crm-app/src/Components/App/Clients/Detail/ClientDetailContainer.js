@@ -1,10 +1,11 @@
 import React, {useCallback} from 'react';
-import { Route, Switch, useParams } from 'react-router-dom';
+import { Redirect, Route, Switch, useParams } from 'react-router-dom';
 import { Routes } from '../../../../core/routing';
-import ClientEdit from './Edit/ClientEdit';
+import ClientUpdate from './Edit/ClientUpdate';
 import ClientsDetail from './ClientsDetail';
 import { fetchClient } from '../../../../core/modules/clients/api';
 import useFetch from '../../../../core/hooks/useFetch';
+import AdminRoute from '../../../Onboarding/Login/Shared/Route/AdminRoute';
 
 
 const ClientDetailContainer = () => {
@@ -27,11 +28,12 @@ const ClientDetailContainer = () => {
     return (
         <Switch>
             <Route path={Routes.ClientsEdit}>
-                <ClientEdit onUpdate={(data) => setData(data)} client={client} />
+                <ClientUpdate onUpdate={(data) => setData(data)} client={client} />
             </Route>
             <Route path={Routes.ClientsDetail}>
                 <ClientsDetail client={client} />
             </Route>
+            <Redirect to={Routes.Clients} />
         </Switch>
     )
 }

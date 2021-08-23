@@ -2,8 +2,13 @@
  * register routes
  */
 const Routes = Object.freeze({
+    // projects
     Projects: '/projects',
     ProjectsDetail: '/projects/:id',
+    ProjectsCreate: '/projects/create',
+    ProjectsEdit: '/projects/:id/edit',
+    ProjectsDelete: '/projects/:id/delete',
+
     // clients
     Clients: '/clients',
     ClientsDetail: '/clients/:id',

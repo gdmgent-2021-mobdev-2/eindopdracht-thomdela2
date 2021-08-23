@@ -1,12 +1,13 @@
 import React, {useState} from 'react';
 import { useHistory } from 'react-router-dom';
-import useAuthApi from '../../../../../core/hooks/useAuthApi';
-import { updateClient } from '../../../../../core/modules/clients/api';
-import { route, Routes } from '../../../../../core/routing';
-import ErrorAlert from '../../../../Onboarding/Login/Shared/ErrorAlert';
-import ClientForm from '../../Form/ClientForm';
+import useAuthApi from '../../../../core/hooks/useAuthApi';
+import { createClient } from '../../../../core/modules/clients/api';
+import { Routes } from '../../../../core/routing';
+import ErrorAlert from '../../../Onboarding/Login/Shared/ErrorAlert';
+import ClientForm from '../Form/ClientForm';
 
-const ClientEdit = ({ client, onUpdate }) => {
+const ClientNew = () => {
+
     const withAuth = useAuthApi();
     const history = useHistory();
     const [error, setError] = useState();
@@ -14,10 +15,9 @@ const ClientEdit = ({ client, onUpdate }) => {
 
     const handleSubmit = (data) => {
         setIsLoading(true);
-        withAuth(updateClient(data))
-            .then((data) => {
-                onUpdate(data);
-                history.push(route(Routes.ClientsDetail, { id: data._id }));
+        withAuth(createClient(data))
+            .then(() => {
+                history.push(Routes.Clients);
             })
             .catch((error) => {
                 console.log(error.message);
@@ -30,13 +30,13 @@ const ClientEdit = ({ client, onUpdate }) => {
         <main>
             <div className="innerMain">
                 <h1>
-                Edit Client 
+                New Client 
                 </h1>
-                <ClientForm onSubmit={handleSubmit} disabled={isLoading} initialData={client} />
+                <ClientForm onSubmit={handleSubmit} disabled={isLoading} />
                 <ErrorAlert error={error} />
             </div>
         </main>
     )
 }
 
-export default ClientEdit;
+export default ClientNew;

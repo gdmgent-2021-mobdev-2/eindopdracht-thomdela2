@@ -2,15 +2,16 @@ import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import ClientsOverview from './Overview/ClientsOverview';
 import { Routes } from '../../../core/routing';
-import CreateClient from './Create/CreateClient';
 import ClientDetailContainer from './Detail/ClientDetailContainer';
+// import AdminRoute from '../../Onboarding/Login/Shared/Route/AdminRoute';
+import ClientNew from './Create/ClientNew';
 
 const Clients = () => {
     return (
         <>
             <Switch>
                 <Route path={Routes.ClientsCreate}>
-                    <CreateClient />
+                    <ClientNew />
                 </Route>
                 <Route path={Routes.ClientsDetail}>
                     <ClientDetailContainer />

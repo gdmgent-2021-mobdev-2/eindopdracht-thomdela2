@@ -1,6 +1,3 @@
-import { useHistory } from "react-router-dom";
-import { Routes } from "../../routing";
-
 const { createHeaders } = require("../../utils/api");
 
 const fetchClients = () => (headers) => {
@@ -32,12 +29,13 @@ const updateClient = (data) => (headers) => {
     });
 }
 
+// TODO
 const deleteClient = (data) => (headers) => {
     const { _id } = data;
     return fetch(`${process.env.REACT_APP_API_URL}/clients/${_id}`, {
         method: 'DELETE',
         headers: createHeaders(headers)
-    })
+    });
 }
 
 export {
